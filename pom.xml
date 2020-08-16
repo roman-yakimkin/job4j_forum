@@ -18,6 +18,7 @@
     <maven.compiler.source>13</maven.compiler.source>
     <maven.compiler.target>13</maven.compiler.target>
     <spring.version>5.2.7.RELEASE</spring.version>
+    <springboot.version>2.3.1.RELEASE</springboot.version>
   </properties>
 
   <dependencies>
@@ -48,22 +49,25 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>${spring.version}</version>
+      <version>${springboot.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-tomcat</artifactId>
+      <version>${springboot.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-jasper</artifactId>
+      <version>9.0.37</version>
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <version>${springboot.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -75,6 +79,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${springboot.version}</version>
       </plugin>
     </plugins>  </build>
 </project>
