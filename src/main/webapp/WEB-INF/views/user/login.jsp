@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!doctype html>
 <html >
 <head>
@@ -12,40 +11,31 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/styles.css">
+
     <title>The job4j forum</title>
 </head>
 <body>
-<div class="container pt-3">
-    <div class="row">
-        <div class="col col-sm-12">
-            <%@ include file="chunks/menu.jsp" %>
+<div class="container mt-3">
+    <div class="row pt-3">
+        <div class="col-sm-12">
+            <h4>The job4j forum</h4>
         </div>
     </div>
-    <div class="row">
-        <h4>The job4j forum</h4>
-    </div>
     <div class="row pt-3">
-        <a class="btn btn-primary" href="<c:url value="/post/create" />">New post</a>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Post</th>
-                <th scope="col">By</th>
-                <th scope="col">Created</th>
-                <th scope="col">Updated</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${posts}" var="post">
-                <tr>
-                    <td><a href="<c:url value="/post/${post.id}" /> ">${post.title}</a></td>
-                    <td><a href="<c:url value="/user/${post.author.id}" /> ">${post.author.name}</a></td>
-                    <td><fmt:formatDate value="${post.created.time}" pattern="dd.MM.Y HH:mm:ss" /></td>
-                    <td><fmt:formatDate value="${post.changed.time}" pattern="dd.MM.Y HH:mm:ss" /></td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+        <div class="col-sm-12">
+            <h5>Login</h5>
+            <form class="form-main" action="/user/login" method="post" style="width: 100%">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input class="form-control" type="text" name="username" />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input class="form-control" type="password" name="password" />
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
     </div>
 </div>
 
