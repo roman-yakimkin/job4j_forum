@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!doctype html>
 <html >
 <head>
@@ -12,35 +11,29 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/styles.css">
+
     <title>The job4j forum</title>
 </head>
 <body>
 <div class="container mt-3">
-    <div class="row">
+    <div class="row pt-3">
         <h4>The job4j forum</h4>
     </div>
     <div class="row pt-3">
-        <a class="btn btn-primary" href="<c:url value="/post/create" />">New post</a>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Post</th>
-                <th scope="col">By</th>
-                <th scope="col">Created</th>
-                <th scope="col">Updated</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${posts}" var="post">
-                <tr>
-                    <td><a href="<c:url value="/post/${post.id}" /> ">${post.title}</a></td>
-                    <td><a href="<c:url value="/user/${post.author.id}" /> ">${post.author.name}</a></td>
-                    <td><fmt:formatDate value="${post.created.time}" pattern="dd.MM.Y HH:mm:ss" /></td>
-                    <td><fmt:formatDate value="${post.changed.time}" pattern="dd.MM.Y HH:mm:ss" /></td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+        <div class="col-sm-12">
+            <form class="form-main" action="/post/save" method="post" style="width: 100%">
+                <input type="hidden" name="id" value="${item.id}" />
+                <div class="form-group">
+                    <label>Title</label>
+                    <input class="form-control" type="text" name="title" value="${item.title}" />
+                </div>
+                <div class="form-group">
+                    <label>Body</label>
+                    <textarea class="form-control" name="body" rows="10">${item.body}</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Save post</button>
+            </form>
+        </div>
     </div>
 </div>
 

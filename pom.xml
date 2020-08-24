@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.1.RELEASE</version>
+    <version>2.2.9.RELEASE</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
@@ -32,8 +32,8 @@
       <artifactId>junit</artifactId>
       <version>4.11</version>
       <scope>test</scope>
-
     </dependency>
+
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
@@ -44,6 +44,12 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-dbcp2</artifactId>
       <version>2.7.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
     </dependency>
 
     <dependency>
@@ -74,6 +80,13 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/de.sven-jacobs/loremipsum -->
+    <dependency>
+      <groupId>de.sven-jacobs</groupId>
+      <artifactId>loremipsum</artifactId>
+      <version>1.0</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -83,5 +96,6 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
-    </plugins>  </build>
+    </plugins>
+  </build>
 </project>

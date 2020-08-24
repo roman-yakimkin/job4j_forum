@@ -1,0 +1,11 @@
+.comments .comment {
+    width: 100%;
+}
+
+.row .post {
+    margin-bottom: 50px;
+}
+
+.row .comments {
+    margin-bottom: 25px;
+}
