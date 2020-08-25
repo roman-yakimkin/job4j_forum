@@ -1,5 +1,5 @@
 (function ($) {
     $(document).ready(function() {
-        alert("Register script");
+        //alert("Register script");
     });
 })(jQuery);

@@ -1,5 +1,14 @@
+.row > .title {
+    margin: 20px 0px 20px 0px;
+}
+
+.create-post {
+    margin-bottom: 20px;
+}
+
 .comments .comment {
     width: 100%;
+    margin: 10px 0px 10px 0px;
 }
 
 .row .post {
@@ -8,4 +17,8 @@
 
 .row .comments {
     margin-bottom: 25px;
+}
+
+.nav-item {
+    margin-right: 50px;
 }

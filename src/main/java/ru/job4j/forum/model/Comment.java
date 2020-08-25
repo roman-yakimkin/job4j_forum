@@ -8,7 +8,7 @@ import java.util.*;
  * @since 18.08.2020
  * @version 1.0
  */
-public class Comment {
+public class Comment implements TimeableEntity {
     private int id;
     private Calendar created;
     private Calendar changed;

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  * @since 17.08.2020
  * @version 1.0
  */
-public class Post {
+public class Post implements TimeableEntity {
     private int id;
     private String title;
     private String body;

@@ -1,5 +1,7 @@
 package ru.job4j.forum.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ import java.util.GregorianCalendar;
 @Controller
 @RequestMapping("/comment")
 public class CommentCtrl {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommentCtrl.class);
     private final PostService posts;
     private final CommentService comments;
     private final UserService users;
@@ -31,6 +34,7 @@ public class CommentCtrl {
     }
 
     @GetMapping({"/reply/{postId}/{parentId}", "/reply/{postId}"})
+
     public String create(@PathVariable("postId") String postIdStr, @PathVariable("parentId") String parentIdStr, Model model) {
         String path = "comment/edit";
         try {
@@ -41,14 +45,17 @@ public class CommentCtrl {
                 throw new NullPointerException("Cannot find a post with id = " + postId);
             }
             Comment parent = comments.get(parentId);
+            if (parent == null || !parent.getPost().equals(post)) {
+
+            }
             Comment item = new Comment();
             item.setId(0);
             item.setPost(post);
             item.setParent(parent);
             model.addAttribute("item", item);
-        } catch (Exception e) {
-            e.printStackTrace();
-            path = "redirect:/a/";
+        } catch (Exception ex) {
+            LOGGER.debug(ex.getMessage());
+            path = "redirect:/";
         }
 
         return path;
@@ -66,8 +73,8 @@ public class CommentCtrl {
             int parentId = item.getParent() != null ? item.getParent().getId() : 0;
             model.addAttribute("item", item);
             model.addAttribute("parentId", parentId);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            LOGGER.debug(ex.getMessage());
             path = "redirect:/";
         }
 
@@ -86,8 +93,8 @@ public class CommentCtrl {
                 path = "redirect:/post/" + postId;
             }
             comments.delete(commentId);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            LOGGER.debug(ex.getMessage());
         }
         return path;
     }
@@ -110,8 +117,8 @@ public class CommentCtrl {
             }
             comments.save(item);
             path = "redirect:/post/" + postId;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            LOGGER.debug(ex.getMessage());
         }
         return path;
     }

@@ -22,30 +22,34 @@
         </div>
     </div>
     <div class="row">
-        <h4>The job4j forum</h4>
+        <div class="col col-sm-12 title">
+            <h4>The job4j forum</h4>
+        </div>
     </div>
     <div class="row pt-3">
-        <a class="btn btn-primary" href="<c:url value="/post/create" />">New post</a>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Post</th>
-                <th scope="col">By</th>
-                <th scope="col">Created</th>
-                <th scope="col">Updated</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${posts}" var="post">
+        <div class="col col-sm-12">
+            <a class="btn btn-primary create-post" href="<c:url value="/post/create" />">New post</a>
+            <table class="table">
+                <thead>
                 <tr>
-                    <td><a href="<c:url value="/post/${post.id}" /> ">${post.title}</a></td>
-                    <td><a href="<c:url value="/user/${post.author.id}" /> ">${post.author.name}</a></td>
-                    <td><fmt:formatDate value="${post.created.time}" pattern="dd.MM.Y HH:mm:ss" /></td>
-                    <td><fmt:formatDate value="${post.changed.time}" pattern="dd.MM.Y HH:mm:ss" /></td>
+                    <th scope="col">Post</th>
+                    <th scope="col">By</th>
+                    <th scope="col">Created</th>
+                    <th scope="col">Updated</th>
                 </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <c:forEach items="${posts}" var="post">
+                    <tr>
+                        <td><a href="<c:url value="/post/${post.id}" /> ">${post.title}</a></td>
+                        <td><a href="<c:url value="/user/${post.author.id}" /> ">${post.author.name}</a></td>
+                        <td><fmt:formatDate value="${post.created.time}" pattern="dd.MM.Y HH:mm:ss" /></td>
+                        <td><fmt:formatDate value="${post.changed.time}" pattern="dd.MM.Y HH:mm:ss" /></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

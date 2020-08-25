@@ -2,6 +2,7 @@ package ru.job4j.forum.service;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import ru.job4j.forum.comparator.SortByTimeDescComparator;
 import ru.job4j.forum.event.BeforePostDeleteEvent;
 import ru.job4j.forum.model.Comment;
 import ru.job4j.forum.model.Post;
@@ -79,7 +80,9 @@ public class CommentService {
 
     public List<Comment> getAllChildrenByParent(Comment parent) {
         List<Comment> result = new ArrayList<>();
-        for (Comment comment : getChildrenByParent(parent)) {
+        List<Comment> childrenByParent = getChildrenByParent(parent);
+        childrenByParent.sort(new SortByTimeDescComparator());
+        for (Comment comment : childrenByParent) {
             result.add(comment);
             List<Comment> children = getAllChildrenByParent(comment);
             if (children.size() > 0) {
@@ -116,6 +119,15 @@ public class CommentService {
         comment.setChanged(new GregorianCalendar());
 
         comments.put(comment.getId(), comment);
+    }
+
+    public List<Comment> getLatestByUser(User user, int count) {
+        return  getAll()
+                .stream()
+                .filter(comment -> comment.getAuthor().equals(user))
+                .sorted(new SortByTimeDescComparator())
+                .limit(count)
+                .collect(Collectors.toList());
     }
 
     @EventListener

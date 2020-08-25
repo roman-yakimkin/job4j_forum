@@ -1,5 +1,7 @@
 package ru.job4j.forum.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import java.util.List;
  */
 @Controller
 public class IndexCtrl {
+    private static final Logger LOGGER = LoggerFactory.getLogger(IndexCtrl.class);
     private final PostService posts;
     private final CommentService comments;
     private final UserService users;
@@ -30,8 +33,7 @@ public class IndexCtrl {
 
     @GetMapping({"/", "/index"})
     public String index(Model model) {
-        model.addAttribute("posts", posts.getAll());
-        model.addAttribute("user", users.getCurrentUser());
+        model.addAttribute("posts", posts.getLatest());
         return "index";
     }
 }

@@ -5,10 +5,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import ru.job4j.forum.interceptor.AddUserInfoInterceptor;
+import ru.job4j.forum.service.UserService;
 
 /**
  * The config beans
@@ -20,6 +23,12 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan("ru.job4j.forum")
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
+    private UserService users;
+
+    public WebConfig(UserService users) {
+        this.users = users;
+    }
+
     @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver bean = new InternalResourceViewResolver();
@@ -38,5 +47,11 @@ public class WebConfig implements WebMvcConfigurer {
         registry
                 .addResourceHandler("/scripts/**")
                 .addResourceLocations("/WEB-INF/resources/js/");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry
+                .addInterceptor(new AddUserInfoInterceptor(users));
     }
 }

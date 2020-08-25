@@ -17,6 +17,11 @@
 </head>
 <body>
 <div class="container pt-3">
+    <div class="row">
+        <div class="col col-sm-12">
+            <%@ include file="../chunks/menu.jsp" %>
+        </div>
+    </div>
     <div class="row pt-3">
         <div class="col-sm-12">
             <h4>The job4j forum</h4>
