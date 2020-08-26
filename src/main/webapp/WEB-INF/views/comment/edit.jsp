@@ -29,7 +29,7 @@
     <div class="row pt-3">
         <div class="col-sm-12">
             <h6>${item.post.title}</h6>
-            <c:if test="${item.parent}">
+            <c:if test="${item.parent != null}">
                 <div class="parent">
                     ${item.parent.body}
                 </div>

@@ -37,20 +37,13 @@ public class PostCtrl {
 
     @GetMapping("/{id:\\d+}")
     public String view(@PathVariable Integer id, Model model) throws EntityNotFoundException {
-        String path = "post/view";
-//        try {
-//            int itemId = Integer.parseInt(id);
-            Post item = posts.get(id);
-            if (item == null) {
-                throw new EntityNotFoundException("Cannot find a post with id = " + id);
-            }
-            model.addAttribute("item", posts.get(id));
-            model.addAttribute("comments", comments.getTreeByPost(id));
-//        }  catch (Exception ex) {
-//            LOGGER.debug(ex.getMessage());
-//            path = "redirect:/";
-//        }
-        return path;
+        Post item = posts.get(id);
+        if (item == null) {
+            throw new EntityNotFoundException("Cannot find a post with id = " + id);
+        }
+        model.addAttribute("item", posts.get(id));
+        model.addAttribute("comments", comments.getTreeByPost(id));
+        return "post/view";
     }
 
     @GetMapping("/create")
@@ -61,30 +54,18 @@ public class PostCtrl {
     }
 
     @GetMapping("/{id:\\d+}/edit")
-    public String edit(@PathVariable String id, Model model) throws EntityNotFoundException {
-        String path = "post/edit";
-        try {
-            int itemId = Integer.parseInt(id);
-            Post item = posts.get(itemId);
-            if (item == null) {
-                throw new EntityNotFoundException("Cannot find a post with id = " + id);
-            }
-            model.addAttribute("item", posts.get(itemId));
-        } catch (NumberFormatException ex) {
-            LOGGER.debug(ex.getMessage());
-            path = "redirect:/";
+    public String edit(@PathVariable Integer id, Model model) throws EntityNotFoundException {
+        Post item = posts.get(id);
+        if (item == null) {
+            throw new EntityNotFoundException("Cannot find a post with id = " + id);
         }
-        return path;
+        model.addAttribute("item", item);
+        return "post/edit";
     }
 
     @GetMapping("/{id:\\d+}/delete")
-    public String delete(@PathVariable String id, Model model) {
-        try {
-            int itemId = Integer.parseInt(id);
-            posts.delete(itemId);
-        } catch (NumberFormatException ex) {
-            LOGGER.debug(ex.getMessage());
-        }
+    public String delete(@PathVariable Integer id, Model model) {
+        posts.delete(id);
         return "redirect:/";
     }
 

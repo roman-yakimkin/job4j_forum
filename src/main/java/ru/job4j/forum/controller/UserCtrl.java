@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.forum.exception.EntityNotFoundException;
 import ru.job4j.forum.model.User;
 import ru.job4j.forum.service.CommentService;
 import ru.job4j.forum.service.PostService;
@@ -34,22 +35,15 @@ public class UserCtrl {
     }
 
     @GetMapping("/{id}")
-    public String view(@PathVariable(value = "id") String itemIdStr, Model model) {
-        String path = "user/view";
-        try {
-            int itemId = Integer.parseInt(itemIdStr);
-            User item = users.get(itemId);
-            if (item == null) {
-                throw new IllegalArgumentException("Cannot find a post with id = " + itemId);
-            }
-            model.addAttribute("item", item);
-            model.addAttribute("posts", posts.getLatestByUser(item, 10));
-            model.addAttribute("comments", comments.getLatestByUser(item, 10));
-        } catch (Exception ex) {
-            LOGGER.debug(ex.getMessage());
-            path = "redirect:/";
+    public String view(@PathVariable(value = "id") Integer id, Model model) throws EntityNotFoundException {
+        User item = users.get(id);
+        if (item == null) {
+            throw new EntityNotFoundException("Cannot find a user with id = " + id);
         }
-        return path;
+        model.addAttribute("item", item);
+        model.addAttribute("posts", posts.getLatestByUser(item, 10));
+        model.addAttribute("comments", comments.getLatestByUser(item, 10));
+        return "user/view";
     }
 
     @GetMapping("/register")
