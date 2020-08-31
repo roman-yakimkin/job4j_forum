@@ -5,12 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.job4j.forum.model.Comment;
-import ru.job4j.forum.service.CommentService;
-import ru.job4j.forum.service.PostService;
-import ru.job4j.forum.service.UserService;
-
-import java.util.List;
+import ru.job4j.forum.service.jpa.CommentService;
+import ru.job4j.forum.service.jpa.PostService;
+import ru.job4j.forum.service.jpa.UserService;
 
 /**
  * The index controller class

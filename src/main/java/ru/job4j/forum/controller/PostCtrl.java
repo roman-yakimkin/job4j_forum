@@ -7,9 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.forum.exception.EntityNotFoundException;
 import ru.job4j.forum.model.Post;
-import ru.job4j.forum.service.CommentService;
-import ru.job4j.forum.service.PostService;
-import ru.job4j.forum.service.UserService;
+import ru.job4j.forum.service.jpa.CommentService;
+import ru.job4j.forum.service.jpa.PostService;
+import ru.job4j.forum.service.jpa.UserService;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -73,9 +73,12 @@ public class PostCtrl {
     public String save(@ModelAttribute Post item) {
         Calendar now = new GregorianCalendar();
         if (item.getId() == 0) {
-            item.setId(Post.newId());
             item.setCreated(now);
             item.setAuthor(users.getCurrentUser());
+        } else {
+            Post current = posts.get(item.getId());
+            item.setCreated(current.getCreated());
+            item.setAuthor(current.getAuthor());
         }
         item.setChanged(now);
         posts.save(item);

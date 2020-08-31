@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import ru.job4j.forum.interceptor.AddUserInfoInterceptor;
-import ru.job4j.forum.service.UserService;
+import ru.job4j.forum.service.jpa.UserService;
 
 /**
  * The config beans

@@ -1,4 +1,4 @@
-package ru.job4j.forum.service;
+package ru.job4j.forum.service.mem;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.forum.model.Authority;
@@ -14,7 +14,7 @@ import java.util.Map;
  * @since 18.08.2020
  * @version 1.0
  */
-@Service
+//@Service("MemAuthorityService")
 public class AuthorityService {
     Map<String, Authority> authorities = new HashMap<>();
 

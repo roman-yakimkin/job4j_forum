@@ -1,4 +1,4 @@
-package ru.job4j.forum.service;
+package ru.job4j.forum.service.mem;
 
 import de.svenjacobs.loremipsum.LoremIpsum;
 import org.springframework.context.ApplicationEventPublisher;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @since 17.08.2020
  * @version 1.0
  */
-@Service("PostService")
+//@Service("MemPostService")
 public class PostService {
     private Map<Integer, Post> posts = new HashMap<>();
     private ApplicationEventPublisher eventPublisher;

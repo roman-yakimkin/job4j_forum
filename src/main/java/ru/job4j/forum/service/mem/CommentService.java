@@ -1,4 +1,4 @@
-package ru.job4j.forum.service;
+package ru.job4j.forum.service.mem;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * @since 19.08.2020
  * @version 1.0
  */
-@Service
+//@Service("MemCommentService")
 public class CommentService {
     private Map<Integer, Comment> comments = new HashMap<>();
 

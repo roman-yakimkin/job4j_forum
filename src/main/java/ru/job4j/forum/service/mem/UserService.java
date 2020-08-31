@@ -1,14 +1,10 @@
-package ru.job4j.forum.service;
+package ru.job4j.forum.service.mem;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.forum.model.Authority;
-import ru.job4j.forum.model.Comment;
 import ru.job4j.forum.model.User;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -18,7 +14,7 @@ import java.util.stream.Collectors;
  * @since 18.08.2020
  * @version 1.0
  */
-@Service
+//@Service("MemUserService")
 public class UserService {
     private AuthorityService authorityService;
     private Map<Integer, User> users = new HashMap<>();
@@ -33,10 +29,10 @@ public class UserService {
         Authority poster = authorityService.getOne("ROLE_POSTER");
         Authority commenter = authorityService.getOne("ROLE_COMMENTER");
 
-        User root = User.of("root", "password", List.of(admin, poster, commenter));
-        User poster1 = User.of("ivanov", "123456", List.of(poster, commenter));
-        User poster2 = User.of("petrov", "123456", List.of(poster, commenter));
-        User commenterOnly = User.of("novice", "123", List.of(commenter));
+        User root = User.of("root", "password", Set.of(admin, poster, commenter));
+        User poster1 = User.of("ivanov", "123456", Set.of(poster, commenter));
+        User poster2 = User.of("petrov", "123456", Set.of(poster, commenter));
+        User commenterOnly = User.of("novice", "123", Set.of(commenter));
 
         users.put(root.getId(), root);
         users.put(poster1.getId(), poster1);

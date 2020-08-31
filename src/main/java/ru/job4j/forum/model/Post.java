@@ -1,5 +1,6 @@
 package ru.job4j.forum.model;
 
+import javax.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -9,14 +10,29 @@ import java.util.stream.Collectors;
  * @since 17.08.2020
  * @version 1.0
  */
+@Entity
+@Table(name = "post")
 public class Post implements TimeableEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "body")
     private String body;
+
+    @Column(name = "created")
     private Calendar created;
+
+    @Column(name = "changed")
     private Calendar changed;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id")
     private User author;
-    private List<Comment> comments = new ArrayList<>();
 
     private static int counter = 0;
 
@@ -26,7 +42,7 @@ public class Post implements TimeableEntity {
 
     public static Post of(String title, String body, User author) {
         Post post = new Post();
-        post.id = Post.newId();
+//        post.id = Post.newId();
         post.title = title;
         post.body = body;
         post.author = author;
@@ -82,18 +98,6 @@ public class Post implements TimeableEntity {
 
     public void setAuthor(User author) {
         this.author = author;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public List<Comment> getDirectComments() {
-        return comments.stream().filter((comment -> comment.getParent() == null)).collect(Collectors.toList());
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
     }
 
     @Override

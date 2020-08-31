@@ -7,9 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.forum.exception.EntityNotFoundException;
 import ru.job4j.forum.model.User;
-import ru.job4j.forum.service.CommentService;
-import ru.job4j.forum.service.PostService;
-import ru.job4j.forum.service.UserService;
+import ru.job4j.forum.service.jpa.CommentService;
+import ru.job4j.forum.service.jpa.PostService;
+import ru.job4j.forum.service.jpa.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 

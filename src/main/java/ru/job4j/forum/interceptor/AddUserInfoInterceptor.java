@@ -3,7 +3,7 @@ package ru.job4j.forum.interceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import ru.job4j.forum.service.UserService;
+import ru.job4j.forum.service.jpa.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

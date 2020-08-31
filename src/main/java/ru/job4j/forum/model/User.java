@@ -1,8 +1,7 @@
 package ru.job4j.forum.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import javax.persistence.*;
+import java.util.*;
 
 /**
  * The user class
@@ -10,11 +9,27 @@ import java.util.Objects;
  * @since 18.08.2020
  * @version 1.0
  */
+@Entity
+@Table(name = "`user`")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "password")
     private String password;
-    private List<Authority> authorities = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Authority> authorities = new HashSet<>();
 
     private static int counter = 0;
 
@@ -22,9 +37,9 @@ public class User {
         return ++counter;
     }
 
-    public static User of(String name, String password, List<Authority> authorities) {
+    public static User of(String name, String password, Set<Authority> authorities) {
         User user = new User();
-        user.setId(User.newId());
+//        user.setId(User.newId());
         user.setName(name);
         user.setPassword(password);
         user.setAuthorities(authorities);
@@ -55,11 +70,11 @@ public class User {
         this.password = password;
     }
 
-    public List<Authority> getAuthorities() {
+    public Set<Authority> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(List<Authority> authorities) {
+    public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
 
