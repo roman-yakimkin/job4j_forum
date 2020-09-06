@@ -31,8 +31,12 @@
         <div class="col-sm-12 post">
             <h4>${item.title}</h4>
             <div class="actions">
-                <a href="<c:url value="/post/${item.id}/edit"/>">edit</a>
-                <a href="<c:url value="/post/${item.id}/delete"/>">delete</a>
+                <c:if test="${can_edit_post}">
+                    <a href="<c:url value="/post/${item.id}/edit"/>">edit</a>
+                </c:if>
+                <c:if test="${can_delete_post}">
+                    <a href="<c:url value="/post/${item.id}/delete"/>">delete</a>
+                </c:if>
             </div>
             <div class="body">
                 ${item.body}
@@ -51,30 +55,39 @@
                 <div class="author">by <a href="<c:url value="/user/${comment.author.id}"/>">${comment.author.name}</a> on <span class="created"><fmt:formatDate value="${comment.changed.time}" pattern="dd.MM.Y HH:mm:ss" /></div>
                 <div class="body">${comment.body}</div>
                 <div class="actions" >
-                    <a href="<c:url value="/comment/reply/${item.id}/${comment.id}"/>">reply</a>
-                    <a href="<c:url value="/comment/${comment.id}/edit"/>">edit</a>
-                    <a href="<c:url value="/comment/${comment.id}/delete"/>">delete</a>
+                    <c:if test="${can_add_comment}">
+                        <a href="<c:url value="/comment/reply/${item.id}/${comment.id}"/>">reply</a>
+                    </c:if>
+                    <c:if test="${can_edit_comment[comment]}">
+                        <a href="<c:url value="/comment/${comment.id}/edit"/>">edit</a>
+                    </c:if>
+                    <c:if test="${can_delete_comment[comment]}">
+                        <a href="<c:url value="/comment/${comment.id}/delete"/>">delete</a>
+                    </c:if>
                 </div>
             </div>
             </c:forEach>
         </div>
     </div>
     </c:if>
+    <c:if test="${can_add_comment}">
     <div class="row>
         <div class="col-sm-12">
-            <h5>Add new comment</h5>
-            <form class="form-main" action="/comment/save" method="post" style="width: 100%">
-                <input type="hidden" name="id" value="0" />
-                <input type="hidden" name="postId" value="${item.id}" />
-                <input type="hidden" name="parentId" value="0" />
-                <div class="form-group">
-                    <label>Comment</label>
-                    <textarea class="form-control" name="body" rows="5"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Add comment</button>
-            </form>
+    <h5>Add new comment</h5>
+    <form class="form-main" action="/comment/save" method="post" style="width: 100%">
+        <input type="hidden" name="id" value="0" />
+        <input type="hidden" name="postId" value="${item.id}" />
+        <input type="hidden" name="parentId" value="0" />
+        <div class="form-group">
+            <label>Comment</label>
+            <textarea class="form-control" name="body" rows="5"></textarea>
         </div>
-    </div>
+        <button type="submit" class="btn btn-primary">Add comment</button>
+    </form>
+</div>
+</div>
+
+    </c:if>
 </div>
 
 <!-- Optional JavaScript -->

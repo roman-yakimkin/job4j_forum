@@ -28,7 +28,9 @@
     </div>
     <div class="row pt-3">
         <div class="col col-sm-12">
-            <a class="btn btn-primary create-post" href="<c:url value="/post/create" />">New post</a>
+            <c:if test="${can_add_post}">
+                <a class="btn btn-primary create-post" href="<c:url value="/post/create" />">New post</a>
+            </c:if>
             <table class="table">
                 <thead>
                 <tr>

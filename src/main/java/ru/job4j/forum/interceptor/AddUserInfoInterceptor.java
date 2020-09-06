@@ -3,6 +3,8 @@ package ru.job4j.forum.interceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import ru.job4j.forum.service.access.AccessOperation;
+import ru.job4j.forum.service.access.AccessService;
 import ru.job4j.forum.service.jpa.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 public class AddUserInfoInterceptor implements HandlerInterceptor {
-
     private final UserService users;
 
     public AddUserInfoInterceptor(UserService users) {
@@ -26,7 +27,11 @@ public class AddUserInfoInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         if (request.getMethod().equals("GET") && modelAndView != null) {
-            modelAndView.addObject("user", users.getCurrentUser());
+            try {
+                modelAndView.addObject("user", users.getCurrentUser());
+            } catch (IllegalArgumentException ex) {
+                modelAndView.addObject("user", null);
+            }
         }
     }
 }

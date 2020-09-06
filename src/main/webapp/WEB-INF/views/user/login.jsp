@@ -24,6 +24,11 @@
     <div class="row pt-3">
         <div class="col-sm-12">
             <h5>Login</h5>
+            <c:if test="${not empty errorMsg}">
+                <div style="color:red; font-weight: bold; margin: 30px 0px;">
+                    ${errorMsg}
+                </div>
+            </c:if>
             <form class="form-main" action="/user/login" method="post" style="width: 100%">
                 <div class="form-group">
                     <label>Username</label>
@@ -34,6 +39,7 @@
                     <input class="form-control" type="password" name="password" />
                 </div>
                 <button type="submit" class="btn btn-primary">Login</button>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             </form>
         </div>
     </div>

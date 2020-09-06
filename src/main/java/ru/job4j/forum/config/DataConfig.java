@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableJpaRepositories("ru.job4j.forum.repository")
 public class DataConfig {
-    @Bean
+    @Bean("forumDataSource")
     public DataSource ds() {
         BasicDataSource ds = new BasicDataSource();
         ds.setDriverClassName("org.postgresql.Driver");

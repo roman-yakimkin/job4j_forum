@@ -26,7 +26,7 @@
             <form class="form-main" action="/user/register" method="post" style="width: 100%">
                 <div class="form-group">
                     <label>Username</label>
-                    <input class="form-control" type="text" name="username" />
+                    <input class="form-control" type="text" name="name" />
                 </div>
                 <div class="form-group">
                     <label>Password</label>

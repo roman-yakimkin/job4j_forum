@@ -48,7 +48,6 @@ public class UserService {
         return users.values().stream().filter(f).findFirst().orElse(null);
     }
 
-
     public User get(int id) {
         return users.get(id);
     }

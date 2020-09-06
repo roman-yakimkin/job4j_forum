@@ -1,5 +1,7 @@
 package ru.job4j.forum.service.jpa;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import ru.job4j.forum.comparator.SortByTimeDescComparator;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
  */
 @Service("JpaCommentsService")
 public class CommentService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommentService.class);
     private final CommentRepository comments;
 
     public CommentService(CommentRepository comments) {
@@ -33,17 +36,17 @@ public class CommentService {
         return result;
     }
 
-    public Comment get(int id) {
-        return comments.findById(id).orElse(null);
+    public Comment get(int id) throws IllegalArgumentException {
+        return comments.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
     public List<Comment> getByPost(int postId) {
         return comments.findByPostId(postId);
     }
 
-    public boolean isBelongToPost(int id, int postId) {
-        Comment result = comments.findById(id).orElse(null);
-        return (result != null && result.getPost().getId() == postId);
+    public boolean isBelongToPost(int id, int postId) throws IllegalArgumentException{
+        Comment result = comments.findById(id).orElseThrow(IllegalArgumentException::new);
+        return (result.getPost().getId() == postId);
     }
 
     public List<Comment> getChildrenByParent(int parentId) {

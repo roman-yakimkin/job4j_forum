@@ -5,9 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.forum.exception.AccessForbiddenException;
 import ru.job4j.forum.exception.EntityNotFoundException;
 import ru.job4j.forum.model.Comment;
 import ru.job4j.forum.model.Post;
+import ru.job4j.forum.service.access.AccessEntityOperation;
+import ru.job4j.forum.service.access.AccessService;
 import ru.job4j.forum.service.jpa.CommentService;
 import ru.job4j.forum.service.jpa.PostService;
 import ru.job4j.forum.service.jpa.UserService;
@@ -27,61 +30,70 @@ public class CommentCtrl {
     private final PostService posts;
     private final CommentService comments;
     private final UserService users;
+    private final AccessService accessService;
 
-    public CommentCtrl(PostService posts, CommentService comments, UserService users) {
+    public CommentCtrl(PostService posts, CommentService comments, UserService users, AccessService accessService) {
         this.posts = posts;
         this.comments = comments;
         this.users = users;
+        this.accessService = accessService;
     }
 
     @GetMapping({"/reply/{postId:\\d+}/{parentId:\\d+}", "/reply/{postId:\\d+}"})
 
     public String create(@PathVariable("postId") Integer postId,
-                         @PathVariable(value = "parentId", required = false) Integer parentId, Model model) throws EntityNotFoundException {
-        parentId = parentId == null ? 0 : parentId;
-        Post post = posts.get(postId);
-        if (post == null) {
+                         @PathVariable(value = "parentId", required = false) Integer parentId, Model model) throws EntityNotFoundException, AccessForbiddenException {
+        try {
+            if (!accessService.getPermission(AccessEntityOperation.OP_INSERT_COMMENT)) {
+                throw new AccessForbiddenException("You can't enough rights to add new comment");
+            }
+            parentId = parentId == null ? 0 : parentId;
+            Post post = posts.get(postId);
+            Comment parent = comments.get(parentId);
+            if (parent == null || !parent.getPost().equals(post)) {
+                throw new EntityNotFoundException("The post not found");
+            }
+            Comment item = new Comment();
+            item.setId(0);
+            item.setPost(post);
+            item.setParent(parent);
+            model.addAttribute("item", item);
+            return "comment/edit";
+        } catch (IllegalArgumentException ex) {
             throw new EntityNotFoundException("Cannot find a post with id = " + postId);
         }
-        Comment parent = comments.get(parentId);
-        if (parent == null || !parent.getPost().equals(post)) {
-            throw new EntityNotFoundException("The post not found");
-        }
-        Comment item = new Comment();
-        item.setId(0);
-        item.setPost(post);
-        item.setParent(parent);
-        model.addAttribute("item", item);
-
-        return "comment/edit";
     }
 
     @GetMapping("/{commentId}/edit")
-    public String edit(@PathVariable("commentId") Integer commentId, Model model) throws EntityNotFoundException {
-        Comment item = comments.get(commentId);
-        if (item == null) {
+    public String edit(@PathVariable("commentId") Integer commentId, Model model) throws AccessForbiddenException, EntityNotFoundException {
+        try {
+            Comment item = comments.get(commentId);
+            if (!accessService.getPermission(AccessEntityOperation.OP_EDIT_COMMENT, item)) {
+                throw new AccessForbiddenException("You can't enough rights to edit this comment");
+            }
+            int parentId = item.getParent() != null ? item.getParent().getId() : 0;
+            model.addAttribute("item", item);
+            model.addAttribute("parentId", parentId);
+            return "comment/edit";
+        } catch (IllegalArgumentException ex) {
             throw new EntityNotFoundException("Cannot find a comment with id = " + commentId);
         }
-        int parentId = item.getParent() != null ? item.getParent().getId() : 0;
-        model.addAttribute("item", item);
-        model.addAttribute("parentId", parentId);
-
-        return "comment/edit";
     }
 
     @GetMapping("/{commentId}/delete")
-    public String delete(@PathVariable("commentId") Integer commentId, Model model) throws EntityNotFoundException {
-        int postId = 0;
-        String path = "redirect:/";
-        Comment comment = comments.get(commentId);
-        if (comment != null) {
+    public String delete(@PathVariable("commentId") Integer commentId, Model model) throws AccessForbiddenException, EntityNotFoundException {
+        try {
+            int postId = 0;
+            Comment comment = comments.get(commentId);
+            if (!accessService.getPermission(AccessEntityOperation.OP_EDIT_COMMENT, comment)) {
+                throw new AccessForbiddenException("You can't enough rights to delete this comment");
+            }
             postId = comment.getPost().getId();
-            path = "redirect:/post/" + postId;
             comments.delete(comment);
-        } else {
+            return "redirect:/post/" + postId;
+        } catch (IllegalArgumentException ex) {
             throw new EntityNotFoundException("Cannot find a comment with id = " + commentId);
         }
-        return path;
     }
 
     @PostMapping("/save")
@@ -110,6 +122,4 @@ public class CommentCtrl {
         }
         return path;
     }
-
-
 }

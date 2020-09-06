@@ -1,6 +1,8 @@
 package ru.job4j.forum.service.jpa;
 
 import de.svenjacobs.loremipsum.LoremIpsum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -8,7 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.job4j.forum.comparator.SortByTimeDescComparator;
+import ru.job4j.forum.controller.IndexCtrl;
 import ru.job4j.forum.event.BeforePostDeleteEvent;
+import ru.job4j.forum.exception.EntityNotFoundException;
 import ru.job4j.forum.model.Post;
 import ru.job4j.forum.model.User;
 import ru.job4j.forum.repository.PostRepository;
@@ -24,6 +28,7 @@ import java.util.stream.Collectors;
  */
 @Service("JpaPostService")
 public class PostService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PostService.class);
     private final PostRepository posts;
     private ApplicationEventPublisher eventPublisher;
 
@@ -32,8 +37,8 @@ public class PostService {
         this.eventPublisher = eventPublisher;
     }
 
-    public Post get(int id) {
-        return posts.findById(id).orElse(null);
+    public Post get(int id) throws IllegalArgumentException {
+        return posts.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
     public List<Post> getAll() {
@@ -47,11 +52,14 @@ public class PostService {
     }
 
     public void delete(int id) {
-        Post post = get(id);
-        if (post != null) {
+        try {
+            Post post = get(id);
             eventPublisher.publishEvent(new BeforePostDeleteEvent(this, post));
+        } catch (IllegalArgumentException ex) {
+            LOGGER.error(ex.getMessage());
+        } finally {
+            posts.deleteById(id);
         }
-        posts.deleteById(id);
     }
 
     public List<Post> getLatestByUser(User user, int count) {
