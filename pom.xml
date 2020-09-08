@@ -30,7 +30,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
 
@@ -144,6 +144,17 @@
       <id>test</id>
       <properties>
         <db.url>jdbc:postgresql://127.0.0.1:5432/forum</db.url>
+        <db.schema>forum-test</db.schema>
+        <db.username>postgres</db.username>
+        <db.password>password</db.password>
+        <db.driver>org.postgresql.Driver</db.driver>
+      </properties>
+    </profile>
+    <profile>
+      <id>dev</id>
+      <properties>
+        <db.url>jdbc:postgresql://127.0.0.1:5432/forum</db.url>
+        <db.schema>public</db.schema>
         <db.username>postgres</db.username>
         <db.password>password</db.password>
         <db.driver>org.postgresql.Driver</db.driver>
@@ -166,6 +177,12 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <profiles>
+            <profile>test</profile>
+            <profile>dev</profile>
+          </profiles>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.liquibase</groupId>
