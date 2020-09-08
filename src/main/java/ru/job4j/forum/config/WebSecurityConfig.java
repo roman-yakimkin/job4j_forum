@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Qualifier("forumDataSource")
+//    @Qualifier("forumDataSource")
     @Autowired
     DataSource dataSource;
 

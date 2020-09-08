@@ -5,16 +5,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.job4j.forum.Main;
+import ru.job4j.forum.config.TestDataConfig;
 
-@SpringBootTest(classes = Main.class)
+@SpringBootTest(classes = {
+        Main.class,
+        TestDataConfig.class
+})
+@ActiveProfiles("testing")
 @AutoConfigureMockMvc
+@Sql(value = {"/create-tables.sql", "/fill-tables.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class IndexCtrlTest {
 
     @Autowired

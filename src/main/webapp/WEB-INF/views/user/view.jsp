@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
-<html >
+<html>
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
