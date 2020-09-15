@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/styles/styles.css}">
+
+    <title>The job4j forum</title>
+</head>
+<body>
+<div class="container pt-3">
+    <div class="row">
+        <div class="col col-sm-12">
+            <th:block th:insert="~{chunks/menu::menu}"></th:block>
+        </div>
+    </div>
+    <div class="row pt-3">
+        <div class="col-sm-12">
+            <h4>The job4j forum</h4>
+        </div>
+    </div>
+    <div class="row pt-3">
+        <div class="col-sm-12 post">
+            <h4 th:text="${item.title}" />
+            <div class="actions">
+                <a th:if="${can_edit_post}" th:text="edit" th:href="@{/post/{id}/edit(id=${item.id})}"></a>
+                <a th:if="${can_delete_post}" th:text="delete" th:href="@{/post/{id}/delete(id=${item.id})}"></a>
+            </div>
+            <div class="body" th:text="${item.body}">
+            </div>
+            <div class="author">
+                posted by <a th.text="${item.author.name}" th:href="@{/user/{id}(id=${item.author.id})}"></a>, last updated <span class="created" th:text="${#dates.format(item.changed.time, 'dd.MM.Y HH:mm:ss')}"></span>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${#lists.isEmpty(comments)}" class="row pt-3">
+        <div class="col-sm-12 comments">
+            <h5>Comments</h5>
+            <div th:each="comment: ${comments}" class="comment" th:style="'padding-left:' + ${20 * comment.depth} + 'px'">
+                <div class="author">
+                    by <a th:text="${comment.author.name}" th:href="@{/user/{id}(id=${comment.author.id})}">${comment.author.name}</a> on <span class="created" th:text="${#dates.format(comment.changed.time, 'dd.MM.Y HH:mm:ss')}"></span>
+                </div>
+                <div class="body" th:text="${comment.body}"></div>
+                <div class="actions">
+                    <a th:if="${can_add_comment}" th:text="reply" th:href="@{/comment/reply/{item_id}/{comment_id}(item_id=${item.id}, comment_id=${comment.id})}"></a>
+                    <a th:if="${can_edit_comment.get(comment)}" th:text="edit" th:href="@{/comment/{comment_id}/edit(comment_id=${comment.id})}"></a>
+                    <a th:if="${can_delete_comment.get(comment)}" th:text="delete" th:href="@{/comment/{comment_id}/delete(comment_id=${comment.id})}"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:if="${can_add_comment}" class="row">
+        <div class="col-sm-12">
+            <h5>Add new comment</h5>
+            <form class="form-main" th:action="@{/comment/save}" method="post" style="width: 100%">
+                <input type="hidden" name="id" th:value="0" />
+                <input type="hidden" name="postId" th:value="${item.id}" />
+                <input type="hidden" name="parentId" value="0" />
+                <div class="form-group">
+                    <label>Comment</label>
+                    <textarea class="form-control" name="body" rows="5"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add comment</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>
