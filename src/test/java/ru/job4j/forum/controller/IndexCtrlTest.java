@@ -22,7 +22,7 @@ import ru.job4j.forum.config.TestDataConfig;
         Main.class,
         TestDataConfig.class
 })
-@ActiveProfiles("testing")
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 @Sql(value = {"/create-tables.sql", "/fill-tables.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class IndexCtrlTest {
