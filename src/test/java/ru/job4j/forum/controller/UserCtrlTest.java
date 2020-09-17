@@ -33,12 +33,6 @@ public class UserCtrlTest {
     @Test
     @WithAnonymousUser
     public void shouldDisplayUserInfoUponWatchingUserPage() throws Exception {
-//        this.mockMvc.perform(get("/user/1"))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("user/view"));
-//                .andExpect(xpath("//h4/text()").string("root"));
-
         MvcResult result = this.mockMvc.perform(get("/user/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
