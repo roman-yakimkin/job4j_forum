@@ -1,7 +1,7 @@
 package ru.job4j.forum.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -11,8 +11,8 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import javax.persistence.EntityManagerFactory;
 
 /**
  * The data config class
@@ -26,12 +26,12 @@ public class DataConfig {
     @Bean
     @Profile("!test")
     public DataSource ds() {
-        BasicDataSource ds = new BasicDataSource();
-        ds.setDriverClassName("org.postgresql.Driver");
-        ds.setUrl("jdbc:postgresql://127.0.0.1:5432/forum");
-        ds.setUsername("postgres");
-        ds.setPassword("password");
-        return ds;
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.url("jdbc:postgresql://127.0.0.1:5432/forum");
+        dataSourceBuilder.driverClassName("org.postgresql.Driver");
+        dataSourceBuilder.username("postgres");
+        dataSourceBuilder.password("password");
+        return dataSourceBuilder.build();
     }
 
     @Bean
